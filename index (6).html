@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spin XI: concept mock</title>
+<meta name="description" content="Spin XI concept mock: spin, draft, simulate and share.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F1F4EE; --surface:#FFFFFF; --text:#10231A; --muted:#506358; --line:#CBD5CA;
+  --brand:#1B6B43; --pitch:#1B6B43; --pitch-2:#18603D; --chalk:rgba(255,255,255,.8);
+  --accent:#FFD23F; --accent-ink:#10231A;
+  --win:#1B8A4F; --draw:#7B887F; --loss:#C2402B; --shadow:0 18px 40px rgba(16,35,26,.16);
+  --display:"Big Shoulders Display",Impact,"Arial Narrow",sans-serif;
+  --body:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1812; --surface:#12261C; --text:#E8F0E7; --muted:#9CB2A3; --line:#27412F; --brand:#5FD08F;
+    --pitch:#14573A; --pitch-2:#115034; --win:#2FB36C; --draw:#85938A; --loss:#E0634D; --shadow:0 18px 40px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1812; --surface:#12261C; --text:#E8F0E7; --muted:#9CB2A3; --line:#27412F; --brand:#5FD08F;
+  --pitch:#14573A; --pitch-2:#115034; --win:#2FB36C; --draw:#85938A; --loss:#E0634D; --shadow:0 18px 40px rgba(0,0,0,.45);
+}
+/* sport themes */
+:root[data-sport="basketball"]{--pitch:#B3612B;--pitch-2:#A65725;--brand:#A3541F}
+@media (prefers-color-scheme: dark){
+  :root[data-sport="basketball"]:not([data-theme="light"]){--pitch:#8E4A21;--pitch-2:#82421C;--brand:#F0955A}
+}
+:root[data-sport="basketball"][data-theme="dark"]{--pitch:#8E4A21;--pitch-2:#82421C;--brand:#F0955A}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.5}
+h1,h2,h3,p{margin:0}
+button{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+.wrap{width:100%;max-width:1240px;margin:0 auto;padding-left:clamp(16px,4vw,48px);padding-right:clamp(16px,4vw,48px)}
+
+/* site nav */
+.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--surface);border-bottom:1px solid var(--line)}
+.site .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.wordmark{font-family:var(--display);font-weight:900;font-size:32px;line-height:1;letter-spacing:.01em;background:none;border:0;padding:0;cursor:pointer}
+.links{display:flex;gap:24px;align-items:center}
+.links button{background:none;border:0;font-weight:800;font-size:14px;padding:19px 0 16px;cursor:pointer;border-bottom:3px solid transparent}
+.links button[aria-current="page"]{border-bottom-color:var(--brand);color:var(--brand)}
+.links button[disabled]{opacity:.6;cursor:default}
+.strip-note{background:var(--accent);color:var(--accent-ink);font-size:13px;font-weight:700;text-align:center;padding:6px 16px}
+@media (max-width:620px){.links .opt{display:none}}
+
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;border:1.5px solid var(--line);color:var(--muted);margin-left:6px}
+.chip.later{border-style:dashed}
+.chip.in{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);margin-left:0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(32px,4vw,64px);align-items:center;padding-top:clamp(32px,6vw,72px);padding-bottom:clamp(40px,6vw,88px)}
+.hero-copy{container-type:inline-size;min-width:0}
+.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(40px,7vw,100px);font-size:min(11.2cqw,140px);line-height:.96;letter-spacing:0;margin-left:-.02em}
+.hero h1 .ln{display:block;white-space:nowrap}
+.hero h1 .brand{color:var(--brand)}
+.lede{font-size:clamp(17px,1.5vw,21px);color:var(--muted);margin-top:22px;max-width:36ch}
+.ctl{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:28px}
+.hint{margin-top:12px;font-size:13px;color:var(--muted)}
+.hero-copy .seg{margin-bottom:22px}
+.stage{position:relative;padding-bottom:36px}
+.stage .pitch{border-radius:28px;box-shadow:var(--shadow)}
+.float{position:absolute;border-radius:16px;box-shadow:var(--shadow)}
+.float.a{left:-4%;bottom:0;width:min(320px,72%);background:var(--pitch);color:#fff;padding:12px 14px;border:1.5px solid var(--chalk)}
+.float.a .reel{margin-top:6px;background:rgba(0,0,0,.2)}
+.float.a b{font-size:13px}
+.float.b{right:-2%;top:6%;background:var(--surface);padding:10px 14px;max-width:210px}
+.float.b b{font-family:var(--display);font-size:22px;letter-spacing:.05em;display:block;line-height:1.1}
+.float.b span{font-size:12px;color:var(--muted)}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .float.a{left:8px}.float.b{right:8px}
+}
+
+/* sections */
+.sec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:clamp(20px,4vw,56px);padding-top:56px;padding-bottom:56px;border-top:1px solid var(--line)}
+.sec>h2{font-family:var(--display);font-weight:900;font-size:clamp(34px,3.6vw,48px);line-height:.95}
+.sec .intro{font-size:14px;color:var(--muted);margin-top:8px;max-width:26ch}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,40px)}
+.steps h3{font-size:16px;font-weight:800;margin-bottom:6px}
+.steps p{font-size:14px;color:var(--muted)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:900px){.sec{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}
+.card.ghost{border-style:dashed;background:transparent}
+.card h2{font-family:var(--display);font-weight:800;font-size:26px;line-height:1.05}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.stack>*+*{margin-top:16px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 22px;border-radius:99px;border:0;font-weight:800;cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(.96)}
+.btn.line{background:transparent;border:1.5px solid var(--line);color:var(--text)}
+.btn.big{min-height:54px;padding:14px 30px;font-size:16px}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btns .btn{flex:1 1 140px}
+
+.seg{display:inline-flex;gap:4px;padding:4px;border-radius:99px;border:1.5px solid var(--line);background:var(--surface)}
+.seg button{min-height:44px;padding:0 16px;border-radius:99px;border:0;background:transparent;font-weight:800;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+
+.field{display:flex;gap:8px;margin-top:12px}
+.field input{flex:1;min-width:0;min-height:48px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--text);padding:0 14px;font:inherit}
+.err{color:var(--loss);font-size:13px;font-weight:700;margin-top:8px;min-height:1em}
+.linkbtn{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;font-size:13px;color:var(--muted)}
+
+/* turf panel + reel */
+.turf{background:var(--pitch);color:#fff;border-radius:20px;padding:16px;position:relative}
+.reel{height:76px;overflow:hidden;position:relative;border-radius:12px;background:rgba(0,0,0,.18);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 82%,transparent 100%)}
+.reel-item{height:76px;display:flex;align-items:center;gap:14px;padding:0 16px;font-family:var(--display);font-weight:800;font-size:38px;line-height:1;white-space:nowrap}
+.strip{will-change:transform}
+.idle .strip{animation:idle 46s linear infinite}
+@keyframes idle{to{transform:translateY(-50%)}}
+@media (prefers-reduced-motion: reduce){.idle .strip{animation:none}}
+.sw{display:inline-block;flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid rgba(0,0,0,.28);background:linear-gradient(135deg,var(--a) 0 56%,var(--b) 56%)}
+.sw.lg{width:40px;height:40px}
+
+/* pitch (scales with its own width) */
+.pitch{position:relative;aspect-ratio:100/108;border-radius:16px;overflow:hidden;container-type:inline-size;
+  background:repeating-linear-gradient(180deg,var(--pitch) 0 12.5%,var(--pitch-2) 12.5% 25%)}
+.pitch .lines{position:absolute;inset:0;width:100%;height:100%}
+.slot{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;width:68px;width:16cqw}
+.kit{width:46px;width:clamp(40px,11.5cqw,76px);height:auto;display:block;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+.kit path{fill:var(--a);stroke:var(--b);stroke-width:1.4;stroke-linejoin:round}
+.kit text{font-family:var(--display);font-weight:800;font-size:14px;fill:var(--k)}
+.kit.ghost{filter:none}
+.kit.ghost path{fill:rgba(0,0,0,.16);stroke:var(--chalk);stroke-width:1.2;stroke-dasharray:3 2}
+.kit.ghost text{font-family:var(--body);font-size:8.5px;fill:var(--chalk)}
+.nm{font-size:11px;font-size:clamp(9.5px,2.5cqw,13px);font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.65);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot.pop .kit{animation:pop .35s ease-out}
+@keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.slot.pop .kit{animation:none}}
+.pitch.court{background:repeating-linear-gradient(90deg,var(--pitch) 0 10%,var(--pitch-2) 10% 20%)}
+.tcard{margin-top:14px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-size:12px;font-weight:700;color:var(--muted);padding:4px 8px 8px;border-bottom:1.5px solid var(--text)}
+.tbl th.r,.tbl td.r{text-align:right}
+.tbl td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .tp{font-weight:800;width:3.4em}
+.tbl .tn{font-weight:800}
+.tbl .tn .sw{width:14px;height:14px;margin-right:8px;vertical-align:-2px}
+.tbl .tr{font-family:var(--display);font-weight:800;font-size:24px;line-height:1}
+.tbl tr.empty td{color:var(--muted)}
+.tbl tr.empty .tn{font-weight:600;font-style:italic}
+.tbl tr.new td{background:rgba(255,210,63,.3)}
+
+.spinbar{display:flex;gap:12px;align-items:center}
+.reelbox{flex:1;min-width:0;padding:6px;border-radius:16px}
+.spinbar .reel{height:60px}
+.spinbar .reel-item{height:60px;font-size:28px;padding:0 12px;gap:10px}
+.spinbar .reel-item .sw{width:30px;height:30px}
+.dockbtns{flex:none}
+.dockbtns .btn{min-width:170px}
+.sqph{padding-top:16px;margin-top:14px;border-top:1px dashed var(--line)}
+.landed{margin-top:16px}
+@media (max-width:620px){.spinbar .reel-item{font-size:22px}.dockbtns .btn{min-width:0;padding:12px 16px}}
+
+/* draft */
+.bar{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:8px;gap:8px}
+.back{background:none;border:0;padding:8px 0;font-weight:700;color:var(--muted);cursor:pointer;min-height:44px}
+.balls{display:flex;gap:6px;align-items:center}
+.ball{width:16px;height:16px;border-radius:50%;border:2px solid var(--text)}
+.ball.on{background:var(--accent)}
+.draft{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,48px);align-items:start;padding-bottom:40px}
+.col-pitch{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}
+.col-pitch .pitch{border-radius:24px;box-shadow:var(--shadow)}
+@media (max-width:900px){.draft{grid-template-columns:1fr}.col-play{order:1}.col-pitch{order:2;position:static}}
+.panel{margin-top:14px}
+.squad h3{font-size:13px;font-weight:800;color:var(--muted);margin:14px 0 6px}
+.plgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px}
+.pl{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px;min-height:46px;cursor:pointer}
+.pl:hover:not([disabled]){border-color:var(--text)}
+.pl[disabled]{opacity:.45;cursor:not-allowed}
+.pl .n{font-weight:800}
+.pl .p{display:block;font-size:12px;color:var(--muted);font-weight:700}
+.rt{font-family:var(--display);font-weight:800;font-size:23px;min-width:38px;text-align:right}
+.landed{display:flex;align-items:center;gap:14px}
+.landed .cn{font-family:var(--display);font-weight:900;font-size:34px;line-height:1}
+
+/* result */
+.res{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,3vw,48px);align-items:start;padding-bottom:40px}
+@media (max-width:900px){.res{grid-template-columns:1fr}}
+.record{display:flex;gap:26px;margin:14px 0 4px}
+.stat{font-family:var(--display);font-weight:900;font-size:64px;line-height:.9}
+.stat small{display:block;font-family:var(--body);font-weight:700;font-size:12px;color:var(--muted);margin-top:4px}
+.form{display:grid;grid-template-columns:repeat(var(--cols,19),1fr);gap:3px;margin-top:14px}
+.cell{aspect-ratio:1;border-radius:4px;background:var(--line);display:grid;place-items:center;font-size:9px;font-weight:800;color:#fff}
+.cell.W{background:var(--win)}.cell.D{background:var(--draw)}.cell.L{background:var(--loss)}
+.facts{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;font-size:14px}
+.facts b{font-family:var(--display);font-size:24px;margin-right:5px}
+.verdict{font-weight:800;padding:10px 14px;border-radius:12px;background:var(--accent);color:var(--accent-ink);margin-top:14px}
+.ticket{margin-top:14px;border:2px dashed var(--text);border-radius:14px;padding:14px 16px}
+.ticket .code{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.05em;word-break:break-all;line-height:1.1}
+.ghostnum{font-family:var(--display);font-weight:800;font-size:44px;line-height:1}
+.lg-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-weight:700}
+.lg-row:last-child{border-bottom:0}
+footer{border-top:1px solid var(--line);padding-top:24px;padding-bottom:40px;font-size:12.5px;color:var(--muted);margin-top:8px}
+footer p+p{margin-top:10px}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="strip-note">Concept mock with sample data. Team names are real, players and ratings are invented. No crests or photos.</div>
+  <div class="wrap">
+    <button class="wordmark" data-a="home" type="button" aria-label="Spin XI home">Spin XI</button>
+    <nav class="links" aria-label="Main">
+      <button type="button" data-a="home" aria-current="page">Play</button>
+      <button type="button" class="opt" data-a="how">How it works</button>
+      <button type="button" class="opt" disabled aria-disabled="true">Leaderboard<span class="chip later">Later</span></button>
+    </nav>
+  </div>
+</header>
+<main id="app"></main>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r)=>(r||document).querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- seeded helpers ---------- */
+function fnv(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+/* ---------- name pools (invented) ---------- */
+const SN=["Okonkwo","Halvorsen","Reyes","Brandt","Castellano","Lindqvist","Novak","Tanaka","Ferreira","Abara","Whitlock","Duarte","Kowalczyk","Haddad","Mercer","Oyelaran","Petrescu","Valdez","Ashworth","Sorensen","Nakamura","Ibarra","Calloway","Dragic","Eriksen","Fontaine","Gallagher","Hartnett","Iyer","Jovanovic","Kaplan","Lemaire","Morrow","Nwosu","Ostrowski","Pereira","Quintero","Rasmussen","Sandoval","Thorne","Umaru","Vasquez","Weller","Yildiz","Zielinski","Adeyemi","Baptiste","Corrigan","Dunmore","Escobar","Forsyth","Grayson","Hollis","Ishikawa","Jarvis","Kellerman","Larkin","Mbaye","Navarro","Okafor"];
+const INIT="ABCDEFGHJKLMNOPRSTVWYZ";
+
+/* ---------- sport configs: everything sport-specific lives here ---------- */
+const FB_TEAMS=[
+ ["Arsenal","#DB0007","#FFFFFF",85],["Aston Villa","#670E36","#95BFE5",79],["Bournemouth","#DA291C","#111111",76],
+ ["Brentford","#E30613","#FFFFFF",76],["Brighton","#0057B8","#FFFFFF",77],["Burnley","#6C1D45","#99D6EA",70],
+ ["Chelsea","#034694","#FFFFFF",80],["Crystal Palace","#1B458F","#C4122E",76],["Everton","#003399","#FFFFFF",74],
+ ["Fulham","#FFFFFF","#111111",75],["Leeds","#FFCD00","#1D428A",73],["Liverpool","#C8102E","#FFFFFF",85],
+ ["Man City","#6CABDD","#FFFFFF",87],["Man United","#DA291C","#FBE122",79],["Newcastle","#241F20","#FFFFFF",80],
+ ["Nottm Forest","#DD0000","#FFFFFF",75],["Sunderland","#EB172B","#FFFFFF",71],["Tottenham","#132257","#FFFFFF",80],
+ ["West Ham","#7A263A","#1BB1E7",74],["Wolves","#FDB913","#231F20",72]
+];
+const BB_TEAMS=[
+ ["Hawks","#E03A3E","#C1D32F",76],["Celtics","#007A33","#FFFFFF",85],["Nets","#111111","#FFFFFF",73],["Hornets","#1D1160","#00788C",72],
+ ["Bulls","#CE1141","#111111",75],["Cavaliers","#860038","#FDBB30",80],["Mavericks","#00538C","#B8C4CA",79],["Nuggets","#0E2240","#FEC524",84],
+ ["Pistons","#C8102E","#1D42BA",74],["Warriors","#1D428A","#FFC72C",80],["Rockets","#CE1141","#C4CED4",79],["Pacers","#002D62","#FDBB30",77],
+ ["Clippers","#C8102E","#1D428A",77],["Lakers","#552583","#FDB927",81],["Grizzlies","#5D76A9","#12173F",76],["Heat","#98002E","#F9A01B",76],
+ ["Bucks","#00471B","#EEE1C6",80],["Timberwolves","#0C2340","#236192",81],["Pelicans","#0C2340","#C8102E",74],["Knicks","#006BB6","#F58426",80],
+ ["Thunder","#007AC1","#EF3B24",85],["Magic","#0077C0","#C4CED4",77],["76ers","#006BB6","#ED174C",76],["Suns","#1D1160","#E56020",78],
+ ["Trail Blazers","#E03A3E","#111111",72],["Kings","#5A2D81","#63727A",75],["Spurs","#C4CED4","#111111",75],["Raptors","#CE1141","#111111",73],
+ ["Jazz","#002B5C","#F9A01B",72],["Wizards","#002B5C","#E31837",71]
+];
+const JERSEY='M13 2L4 7l4 8 4-2v21h16V13l4 2 4-8-9-5c-2 3-12 3-14 0z';
+const TANK='M12 2h4c0 4 8 4 8 0h4v8c0 3 3 5 3 8v16H9V18c0-3 3-5 3-8z';
+const FB_SVG='<svg class="lines" viewBox="0 0 100 108" aria-hidden="true" fill="none" stroke="rgba(255,255,255,.72)" stroke-width=".6"><rect x="3" y="3" width="94" height="102"/><path d="M38 3A12 12 0 0 0 62 3"/><rect x="25" y="75" width="50" height="30"/><rect x="38" y="93" width="24" height="12"/><path d="M40 75A10 10 0 0 1 60 75"/></svg>';
+const BB_SVG='<svg class="lines" viewBox="0 0 100 108" aria-hidden="true" fill="none" stroke="rgba(255,255,255,.8)" stroke-width=".6"><rect x="3" y="3" width="94" height="102"/><rect x="36" y="3" width="28" height="34"/><circle cx="50" cy="37" r="14"/><path d="M13 3V20A37 37 0 0 0 87 20V3"/><path d="M43 7H57"/><circle cx="50" cy="11" r="2.4"/><path d="M38 105A12 12 0 0 1 62 105"/></svg>';
+function fbSlots(d,m,f){const s=[{pos:'GK'}];for(let i=0;i<d;i++)s.push({pos:'DEF'});for(let i=0;i<m;i++)s.push({pos:'MID'});for(let i=0;i<f;i++)s.push({pos:'FWD'});return s;}
+function tally(res,ov,mode){
+  const W=res.filter(x=>x==='W').length,D=res.filter(x=>x==='D').length,L=res.filter(x=>x==='L').length;
+  let run=0,best=0;
+  res.forEach(x=>{const ok=mode==='unbeaten'?x!=='L':x==='W';if(ok){run++;if(run>best)best=run;}else run=0;});
+  return {res,W,D,L,pts:mode==='unbeaten'?W*3+D:W,run:best,ov:Math.round(ov*10)/10};
+}
+const SPORTS={
+ football:{
+  key:'football',name:'Football',brand:'Spin XI',unit:'XI',size:11,team:'club',squadWord:'squad',
+  teams:FB_TEAMS,posOrder:['GK','DEF','MID','FWD'],
+  posLabel:{GK:'Goalkeepers',DEF:'Defenders',MID:'Midfielders',FWD:'Forwards'},
+  pattern:['GK','GK','DEF','DEF','DEF','DEF','DEF','MID','MID','MID','MID','MID','FWD','FWD','FWD','FWD'],
+  bonus:['MID','FWD'],rmin:62,rmax:91,
+  formations:[{n:'4-3-3',slots:fbSlots(4,3,3)},{n:'4-4-2',slots:fbSlots(4,4,2)},{n:'3-5-2',slots:fbSlots(3,5,2)}],
+  season:38,draws:true,cols:19,court:false,jersey:JERSEY,svg:FB_SVG,
+  runLabel:'longest unbeaten run',ptsLabel:'points',
+  h1:['Spin eleven clubs.','Build your XI.','Beat your mates.'],
+  lede:"Draft from today's squads, play a 38-game season, then dare a friend with a share code.",
+  hint:'You choose your formation once the spin starts. Three rerolls a day, and the same clubs for everyone.',
+  step2:'Eleven spins fill your formation. Every rating is shown in plain sight, with a note on where it comes from.',
+  statsWords:'goals, assists and clean sheets',weekend:['41','3 goals, 2 assists, 1 clean sheet from your XI this weekend'],
+  sampleOrder:[12,0,11,13,1,14,6,17,3,8,19],
+  share:s=>`W${s.W} D${s.D} L${s.L} (${s.pts} pts)`,
+  layout(fi){
+    const sl=SP.formations[fi].slots,rows={FWD:14,MID:38,DEF:62,GK:86},cnt={},seen={};
+    sl.forEach(s=>{cnt[s.pos]=(cnt[s.pos]||0)+1;});
+    return sl.map(s=>{const i=seen[s.pos]||0;seen[s.pos]=i+1;return {x:(i+.5)/cnt[s.pos]*100,y:rows[s.pos],n:cnt[s.pos]};});
+  },
+  sim(xi,code){
+    const WT={GK:1.1,DEF:1,MID:1.05,FWD:1.15};
+    let s=0,w=0;xi.forEach(p=>{s+=p.r*WT[p.pos];w+=WT[p.pos];});
+    const ov=s/w,r=mulberry(fnv('sim'+code)),res=[];
+    for(let i=0;i<38;i++){
+      const opp=70+r()*14,d=ov-opp;
+      const pl=Math.max(.02,Math.min(.6,.22-d*.02)),pw=Math.max(.05,Math.min(.93,.45+d*.045)),u=r();
+      res.push(u<pl?'L':(u<pl+pw?'W':'D'));
+    }
+    return tally(res,ov,'unbeaten');
+  }
+ },
+ basketball:{
+  key:'basketball',name:'Basketball',brand:'Spin 5',unit:'five',size:5,team:'team',squadWord:'roster',
+  teams:BB_TEAMS,posOrder:['PG','SG','SF','PF','C'],
+  posLabel:{PG:'Point guards',SG:'Shooting guards',SF:'Small forwards',PF:'Power forwards',C:'Centres'},
+  pattern:['PG','PG','PG','SG','SG','SG','SF','SF','PF','PF','PF','C','C'],
+  bonus:[],rmin:65,rmax:96,
+  formations:[{n:'Starting five',slots:[{pos:'PG'},{pos:'SG'},{pos:'SF'},{pos:'PF'},{pos:'C'}]}],
+  season:82,draws:false,cols:21,court:true,jersey:TANK,svg:BB_SVG,
+  runLabel:'longest win streak',ptsLabel:'wins',
+  h1:['Spin five teams.','Build your five.','Beat your mates.'],
+  lede:"Draft from today's rosters, play an 82-game season, then dare a friend with a share code.",
+  hint:'Three rerolls a day, and the same teams for everyone.',
+  step2:'Five spins fill your starting five, one per position. Every rating is shown in plain sight, with a note on where it comes from.',
+  statsWords:'points, rebounds and assists',weekend:['212','148 points, 61 rebounds and 39 assists from your five this week'],
+  sampleOrder:[13,9,11,19,17],
+  share:s=>`${s.W}-${s.L}`,
+  layout(fi){
+    const M={PG:[50,80],SG:[17,60],SF:[83,60],PF:[32,30],C:[68,26]};
+    return SP.formations[fi].slots.map(s=>({x:M[s.pos][0],y:M[s.pos][1],n:1}));
+  },
+  sim(xi,code){
+    let s=0;xi.forEach(p=>{s+=p.r;});
+    const ov=s/xi.length,r=mulberry(fnv('sim'+code)),res=[];
+    for(let i=0;i<82;i++){
+      const opp=72+r()*14,d=ov-opp,pw=Math.max(.04,Math.min(.97,.5+d*.04));
+      res.push(r()<pw?'W':'L');
+    }
+    return tally(res,ov,'streak');
+  }
+ }
+};
+const VARIANTS=[['football',0],['football',1],['football',2],['basketball',0]];
+let SP=SPORTS.football,CLUBS=SP.teams,memo={};
+function setSport(k){
+  SP=SPORTS[k];CLUBS=SP.teams;memo={};
+  document.documentElement.dataset.sport=k;
+  const w=$('.wordmark');if(w)w.textContent=SP.brand;
+}
+
+/* ---------- squads, slots, layout ---------- */
+function squad(ci){
+  if(memo[ci])return memo[ci];
+  const r=mulberry(fnv(SP.key+'club'+ci)),base=CLUBS[ci][3],used=new Set();
+  const list=SP.pattern.map(pos=>{
+    let n;do{n=INIT[Math.floor(r()*INIT.length)]+'. '+SN[Math.floor(r()*SN.length)];}while(used.has(n));
+    used.add(n);
+    let rt=Math.round(base-8+r()*15+(SP.bonus.indexOf(pos)>=0?1:0));
+    rt=Math.max(SP.rmin,Math.min(SP.rmax,rt));
+    return {n,pos,r:rt,club:ci};
+  });
+  let out=[];SP.posOrder.forEach(p=>{out=out.concat(list.filter(x=>x.pos===p).sort((a,b)=>b.r-a.r));});
+  out.forEach((p,i)=>{p.idx=i;});
+  return memo[ci]=out;
+}
+function mkSlots(fi){return SP.formations[fi].slots.map(s=>({pos:s.pos}));}
+function layout(fi){return SP.layout(fi);}
+function sampleXI(){
+  const slots=mkSlots(0),used=new Set(),xi=[];
+  slots.forEach((s,i)=>{let ci=SP.sampleOrder[i];while(used.has(ci))ci=(ci+1)%CLUBS.length;used.add(ci);xi.push(squad(ci).filter(p=>p.pos===s.pos)[0]);});
+  return xi;
+}
+
+/* ---------- share code (works for every sport) ---------- */
+function checksum(str){let c=0;for(const ch of str)c=(c+ch.charCodeAt(0))%36;return c.toString(36).toUpperCase();}
+function encode(fi,xi){
+  const vi=VARIANTS.findIndex(v=>v[0]===SP.key&&v[1]===fi);
+  let p=String(vi);
+  xi.forEach(x=>{p+=x.club.toString(36)+x.idx.toString(16);});
+  p=p.toUpperCase();p+=checksum(p);
+  return 'SXI-'+p.match(/.{1,4}/g).join('-');
+}
+function decode(raw){
+  let s=String(raw).toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!s)return {err:"Paste a share code first."};
+  if(s.indexOf('SXI')!==0)return {err:"That doesn't look like a Spin code. Codes start with SXI."};
+  s=s.slice(3);
+  const vi=parseInt(s[0],10);
+  if(!(vi>=0&&vi<VARIANTS.length))return {err:"That code is for a game we don't have."};
+  const key=VARIANTS[vi][0],fi=VARIANTS[vi][1],cfg=SPORTS[key];
+  if(s.length!==cfg.size*2+2)return {err:"That code is the wrong length. Check you copied all of it."};
+  if(checksum(s.slice(0,-1))!==s[s.length-1])return {err:"That code didn't pass the check, so a character is probably wrong. Try pasting it again."};
+  const prev=SP.key;setSport(key);
+  const fail=m=>{setSport(prev);return {err:m};};
+  const slots=mkSlots(fi),xi=[],seen=new Set();
+  for(let i=0;i<cfg.size;i++){
+    const ci=parseInt(s[1+i*2],36),pi=parseInt(s[2+i*2],16);
+    if(!(ci>=0&&ci<CLUBS.length))return fail("That code points to a team that isn't in the list.");
+    const sq=squad(ci);
+    if(!(pi>=0&&pi<sq.length))return fail("That code points to a player who isn't in the squads.");
+    const pl=sq[pi];
+    if(pl.pos!==slots[i].pos||seen.has(ci))return fail("That code doesn't describe a valid line-up.");
+    seen.add(ci);xi.push(pl);
+  }
+  return {key,fi,xi,code:encode(fi,xi)};
+}
+function simulate(xi,code){return SP.sim(xi,code);}
+
+/* ---------- daily seed ---------- */
+const now=new Date();
+const pad=n=>String(n).padStart(2,'0');
+const dateKey=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
+const dateLabel=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+function dailySeq(){
+  const r=mulberry(fnv('SXI'+(SP.key==='football'?'':SP.key)+dateKey)),a=CLUBS.map((_,i)=>i);
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+/* ---------- ui helpers ---------- */
+function lum(hex){const n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;return(0.299*r+0.587*g+0.114*b)/255;}
+const ink=hex=>lum(hex)>0.6?'#10231A':'#FFFFFF';
+const swatch=(ci,cls)=>`<span class="sw ${cls||''}" style="--a:${CLUBS[ci][1]};--b:${CLUBS[ci][2]}"></span>`;
+const reelItem=ci=>`<div class="reel-item">${swatch(ci,'lg')}<span>${esc(CLUBS[ci][0])}</span></div>`;
+function pitchHTML(slots,fi,o){
+  o=o||{};const L=layout(fi);
+  let h=`<div class="pitch${SP.court?' court':''}" role="img" aria-label="${esc(SP.formations[fi].n)}">${SP.svg}`;
+  slots.forEach((s,i)=>{
+    const p=L[i];
+    if(s.pl){
+      const c=CLUBS[s.pl.club];
+      h+=`<div class="slot filled${o.popIdx===i?' pop':''}" style="left:${p.x}%;top:${p.y}%"${o.noNames?'':` title="${esc(s.pl.n)}, ${esc(c[0])}"`}><svg class="kit" viewBox="0 0 40 36" style="--a:${c[1]};--b:${c[2]};--k:${ink(c[1])}" aria-hidden="true"><path d="${SP.jersey}"/><text x="20" y="25" text-anchor="middle">${s.pl.r}</text></svg>${o.noNames?'':`<span class="nm">${esc(s.pl.n.split(' ').pop())}</span>`}</div>`;
+    }else{
+      h+=`<div class="slot empty" style="left:${p.x}%;top:${p.y}%"><svg class="kit ghost" viewBox="0 0 40 36" aria-hidden="true"><path d="${SP.jersey}"/><text x="20" y="23" text-anchor="middle">${s.pos}</text></svg></div>`;
+    }
+  });
+  return h+'</div>';
+}
+function xiTable(slots,o){
+  o=o||{};const n=slots.filter(x=>x.pl).length;
+  let rows='';
+  slots.forEach((x,i)=>{
+    if(x.pl){
+      rows+=`<tr${o.popIdx===i?' class="new"':''}><td class="tp">${x.pos}</td><td class="tn">${swatch(x.pl.club)}${esc(x.pl.n)}</td><td class="r tr">${x.pl.r}</td></tr>`;
+    }else{
+      rows+=`<tr class="empty"><td class="tp">${x.pos}</td><td class="tn">To pick</td><td class="r tr">-</td></tr>`;
+    }
+  });
+  return `<div class="card tcard"><div class="row"><h2>${esc(o.title||('Your '+SP.unit))}</h2><span class="small muted">${n} of ${SP.size}</span></div><table class="tbl"><thead><tr><th scope="col">Pos</th><th scope="col">Player</th><th scope="col" class="r">Rating</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+/* ---------- state ---------- */
+const st={view:'home',fSet:false,fi:0,slots:[],seq:[],ptr:0,rerolls:3,current:null,spinning:false,challenge:null,timer:null,popIdx:-1,result:null};
+const app=$('#app');
+const FOOT=`<footer class="wrap"><p>Free to play. No stake, no purchase, no cash value. 18+ in the UK and Ireland, 21+ where US rules require. <a href="https://www.begambleaware.org" target="_blank" rel="noopener">BeGambleAware.org</a></p><p>Spin XI concept mock. Team names are real, players and ratings are made up for this mock.</p></footer>`;
+function navState(v){document.querySelectorAll('.links button').forEach(b=>{if(b.dataset.a==='home')b.setAttribute('aria-current',v==='home'?'page':'false');});}
+
+/* ---------- views ---------- */
+function home(){
+  clearInterval(st.timer);st.view='home';navState('home');
+  const strip=CLUBS.map((_,i)=>i).concat(CLUBS.map((_,i)=>i)).map(reelItem).join('');
+  const sx=sampleXI(),demo=mkSlots(0).map((s,i)=>({pos:s.pos,pl:sx[i]}));
+  const U=SP.unit;
+  app.innerHTML=`
+  <section class="wrap hero" aria-labelledby="h1">
+    <div class="hero-copy">
+      <div class="seg" id="sportseg" role="group" aria-label="Sport">${Object.keys(SPORTS).map(k=>`<button type="button" data-a="sport" data-v="${k}" aria-pressed="${k===SP.key}">${SPORTS[k].name}</button>`).join('')}</div>
+      <h1 id="h1"><span class="ln">${esc(SP.h1[0])}</span><span class="ln">${esc(SP.h1[1])}</span><span class="ln brand">${esc(SP.h1[2])}</span></h1>
+      <p class="lede">${esc(SP.lede)}</p>
+      <div class="ctl">
+        <button class="btn primary big" data-a="start" type="button">Start today's spin</button>
+      </div>
+      <p class="hint">${esc(SP.hint)}</p>
+      ${st.challenge?`<p class="hint">Chasing a friend's ${U}: ${st.challenge.pts} ${SP.ptsLabel}. <button class="linkbtn" data-a="dropchallenge" type="button">Drop it</button></p>`:''}
+    </div>
+    <div class="stage">
+      ${pitchHTML(demo,0,{noNames:true})}
+      <div class="float a" aria-hidden="true"><b>${esc(dateLabel)}</b><div class="reel idle"><div class="strip">${strip}</div></div></div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="sec" id="how" aria-labelledby="hh">
+      <h2 id="hh">How it works</h2>
+      <div class="steps">
+        <div><h3>1. Spin</h3><p>Spin a ${SP.team} from today's shared sequence. You see the whole ${SP.squadWord} and sign one player. Three rerolls a day, so use them wisely.</p></div>
+        <div><h3>2. Draft</h3><p>${esc(SP.step2)}</p></div>
+        <div><h3>3. Play and share</h3><p>A quick simulation gives your ${U} a ${SP.season}-game record. Get a result card and a share code a friend can load and try to beat. <span class="chip later">Weekly score: later</span></p></div>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="hf">
+      <div><h2 id="hf">Play with friends</h2><p class="intro">Load a friend's ${U} and try to beat their record.</p></div>
+      <div class="two">
+        <div class="card">
+          <h2>Got a friend's code?</h2>
+          <p class="small muted" style="margin-top:4px">Paste it to see their ${U} and season, then draft your own.</p>
+          <div class="field"><input id="codein" aria-label="Share code" placeholder="SXI-XXXX-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false"><button class="btn line" data-a="load" type="button">Load</button></div>
+          <p class="err" id="codeerr" role="alert"></p>
+          <button class="linkbtn" data-a="sample" type="button">No code handy? Try a sample one</button>
+        </div>
+        <div class="card ghost">
+          <div class="row"><h2>Friends league</h2><span class="chip later" style="margin-left:0">Later</span></div>
+          <p class="small muted">Your ${U} scored on real ${SP.statsWords} each week, ranked against your mates. Needs a stats feed we've confirmed, so it isn't in the two-day build.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  ${FOOT}`;
+}
+
+function startDraft(){
+  clearInterval(st.timer);
+  st.view='draft';st.fi=0;st.fSet=SP.formations.length===1;st.slots=mkSlots(st.fi);st.seq=dailySeq();st.ptr=0;st.rerolls=3;st.current=null;st.spinning=false;st.popIdx=-1;
+  navState('draft');
+  app.innerHTML=`
+  <div class="wrap">
+    <div class="bar"><button class="back" data-a="home" type="button">Back</button><div id="prog" class="small" style="font-weight:800"></div><div class="balls" id="balls" role="img"></div></div>
+    <div class="draft">
+      <div class="col-play">
+        <div class="card" id="squadwrap">
+          <div class="spinbar">
+            <div class="turf reelbox"><div class="reel" id="reel" aria-live="polite"><div class="strip" id="strip"><div class="reel-item"><span>Ready to spin</span></div></div></div></div>
+            <div class="dockbtns" id="panel"></div>
+          </div>
+          <div id="sqbody"></div>
+        </div>
+        <div id="xiwrap"></div>
+      </div>
+      <div class="col-pitch" id="pitchwrap"></div>
+    </div>
+  </div>
+  ${FOOT}`;
+  updateDraft();
+}
+function filled(){return st.slots.filter(s=>s.pl).length;}
+function need(pos){return st.slots.filter(s=>s.pos===pos&&!s.pl).length;}
+function updateDraft(){
+  const n=filled(),U=SP.unit;
+  $('#prog').textContent=!st.fSet?'Choose a formation':(n<SP.size?`${SP.formations[st.fi].n}, pick ${n+1} of ${SP.size}`:`${U} complete`);
+  const b=$('#balls');b.setAttribute('aria-label',st.rerolls+' rerolls left');
+  b.innerHTML=[0,1,2].map(i=>`<span class="ball${i<st.rerolls?' on':''}"></span>`).join('');
+  $('#pitchwrap').innerHTML=pitchHTML(st.slots,st.fi,{popIdx:st.popIdx});
+  $('#xiwrap').innerHTML=xiTable(st.slots,{popIdx:st.popIdx});
+  const sw=$('#sqbody'),p=$('#panel');
+  if(!st.fSet){
+    sw.innerHTML=`<div class="sqph"><h2>What formation?</h2><p class="small muted" style="margin-top:6px">Choose how your ${U} lines up before the first spin. You can't change it once you start.</p><div class="seg" role="group" aria-label="Formation" style="margin-top:12px">${SP.formations.map((f,i)=>`<button type="button" data-a="setf" data-v="${i}" aria-pressed="false">${f.n}</button>`).join('')}</div></div>`;
+  }else if(st.current===null){
+    sw.innerHTML=`<div class="sqph"><h2>${st.spinning?'Spinning':(n<SP.size?'Spin to reveal a '+SP.squadWord:U+' complete')}</h2><p class="small muted" style="margin-top:6px">The full ${SP.squadWord} of the ${SP.team} you land on shows here. Pick one player for an open position.</p></div>`;
+  }else{
+    const ci=st.current,sq=squad(ci);
+    let h=`<div class="landed">${swatch(ci,'lg')}<div><div class="cn">${esc(CLUBS[ci][0])}</div><div class="small muted">Pick one player. Ratings are sample numbers.</div></div></div><div class="squad">`;
+    SP.posOrder.forEach(pos=>{
+      const nd=need(pos);
+      h+=`<h3>${SP.posLabel[pos]}, ${nd} to fill</h3><div class="plgrid">`;
+      sq.filter(x=>x.pos===pos).forEach(x=>{
+        h+=`<button class="pl" type="button" data-a="pick" data-i="${x.idx}" ${nd<1?'disabled':''}><span><span class="n">${esc(x.n)}</span><span class="p">${x.pos}${nd<1?', position full':''}</span></span><span class="rt">${x.r}</span></button>`;
+      });
+      h+='</div>';
+    });
+    sw.innerHTML=h+'</div>';
+  }
+  if(!st.fSet){
+    p.innerHTML=`<button class="btn primary big" disabled type="button">Choose a formation</button>`;
+  }else if(st.spinning){
+    p.innerHTML=`<button class="btn primary" disabled type="button">Spinning</button>`;
+  }else if(st.current===null){
+    p.innerHTML=`<button class="btn primary big" data-a="spin" type="button">${n<SP.size?'Spin for pick '+(n+1):'Done'}</button>`;
+  }else{
+    p.innerHTML=`<button class="btn line big" data-a="reroll" type="button" ${st.rerolls<1?'disabled':''}>Reroll${st.rerolls>0?' ('+st.rerolls+' left)':' (none left)'}</button>`;
+  }
+}
+function spin(){
+  if(!st.fSet||st.spinning||st.current!==null)return;
+  if(st.ptr>=st.seq.length)return;
+  const target=st.seq[st.ptr++];
+  st.spinning=true;updateDraft();
+  const strip=$('#strip'),H=60,N=24,items=[];
+  for(let i=0;i<N-1;i++)items.push(Math.floor(Math.random()*CLUBS.length));
+  items.push(target);
+  strip.style.transition='none';strip.style.transform='translateY(0)';
+  strip.innerHTML=items.map(reelItem).join('');
+  void strip.offsetHeight;
+  const land=()=>{st.spinning=false;st.current=target;updateDraft();const sq=$('#squadwrap');if(sq&&window.innerWidth<=900&&sq.scrollIntoView)sq.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'});};
+  if(reduce){strip.style.transform=`translateY(${-(N-1)*H}px)`;land();return;}
+  strip.style.transition='transform 2.1s cubic-bezier(.15,.75,.12,1)';
+  strip.style.transform=`translateY(${-(N-1)*H}px)`;
+  setTimeout(land,2200);
+}
+function reroll(){
+  if(st.spinning||st.current===null||st.rerolls<1)return;
+  st.rerolls--;st.current=null;spin();
+}
+function pick(idx){
+  if(st.current===null)return;
+  const pl=squad(st.current)[idx];
+  const si=st.slots.findIndex(s=>s.pos===pl.pos&&!s.pl);
+  if(si<0)return;
+  st.slots[si].pl=pl;st.popIdx=si;st.current=null;
+  if(filled()===SP.size){finish();return;}
+  const strip=$('#strip');strip.style.transition='none';strip.style.transform='translateY(0)';
+  strip.innerHTML=`<div class="reel-item"><span>Ready to spin</span></div>`;
+  updateDraft();
+}
+function finish(){
+  const xi=st.slots.map(s=>s.pl),code=encode(st.fi,xi),sim=simulate(xi,code);
+  st.result={fi:st.fi,xi,code,sim,own:true};
+  resultView();
+}
+
+function resultView(){
+  clearInterval(st.timer);st.view='result';navState('result');
+  window.scrollTo(0,0);
+  const R=st.result,sim=R.sim,own=R.own,U=SP.unit;
+  const slots=mkSlots(R.fi).map((s,i)=>({pos:s.pos,pl:R.xi[i]}));
+  app.innerHTML=`
+  <div class="wrap">
+    <div class="bar"><button class="back" data-a="home" type="button">Home</button><span class="chip in">${own?'Your '+U:"Friend's "+U}</span></div>
+    <div class="res">
+      <section class="card" aria-label="Result card">
+        <div class="row"><h2>${own?'Your season':'Their season'}</h2><span class="small muted">${esc(SP.formations[R.fi].n)}, ${U} rating ${sim.ov}</span></div>
+        ${pitchHTML(slots,R.fi)}
+        <div class="record" aria-live="polite"><div class="stat"><span id="tw">0</span><small>Won</small></div>${SP.draws?'<div class="stat"><span id="td">0</span><small>Drawn</small></div>':''}<div class="stat"><span id="tl">0</span><small>Lost</small></div></div>
+        <div class="form" id="form" style="--cols:${SP.cols}" aria-label="${SP.season} results">${Array.from({length:SP.season},()=>'<span class="cell"></span>').join('')}</div>
+        <div class="facts" id="facts" hidden><span><b>${sim.run}</b>${SP.runLabel}</span><span><b>${sim.pts}</b>${SP.ptsLabel}</span></div>
+        <div id="verdict"></div>
+      </section>
+      <div class="stack">
+      ${xiTable(slots,{title:(own?'Your ':'Their ')+U})}
+      <div class="stack" id="after" hidden>
+        ${own?`
+        <div class="card">
+          <h2>Challenge a friend</h2>
+          <p class="small muted" style="margin-top:4px">They paste this code and load your ${U}, then try to beat your record.</p>
+          <div class="ticket"><span class="code" id="codeout">${esc(R.code)}</span></div>
+          <div class="btns"><button class="btn primary" data-a="copy" type="button" id="copybtn">Copy code</button><button class="btn line" data-a="share" type="button">Share challenge</button></div>
+          <p class="small muted" id="sharemsg" role="status" style="margin-top:8px"></p>
+        </div>
+        <div class="card">
+          <h2>Save your ${U}</h2>
+          <p class="small muted" style="margin-top:4px">Add your email to keep this ${U} and get your weekly score when it's ready.</p>
+          <div class="field"><input id="email" type="email" aria-label="Email address" placeholder="you@example.com" autocomplete="email"><button class="btn line" data-a="email" type="button">Save</button></div>
+          <p class="small" id="emailmsg" role="status" style="margin-top:8px"></p>
+        </div>
+        <div class="card ghost">
+          <div class="row"><h2>Weekly score</h2><span class="chip later" style="margin-left:0">Refine day</span></div>
+          <p class="small muted">Preview with sample numbers.</p>
+          <div style="display:flex;gap:18px;align-items:flex-end;margin-top:8px"><div class="ghostnum">${SP.weekend[0]}</div><div class="small muted">${SP.weekend[1]}</div></div>
+        </div>
+        <div class="card ghost">
+          <div class="row"><h2>Friends league</h2><span class="chip later" style="margin-left:0">Later</span></div>
+          <div><div class="lg-row"><span>1. Dan</span><span>58</span></div><div class="lg-row"><span>2. You</span><span>41</span></div><div class="lg-row"><span>3. Priya</span><span>37</span></div></div>
+        </div>
+        <div class="btns"><button class="btn primary block big" data-a="again" type="button">Draft again</button></div>
+        `:`
+        <div class="card">
+          <h2>Think you can do better?</h2>
+          <p class="small muted" style="margin-top:4px">You'll draft from today's spin, then we'll compare ${SP.ptsLabel}.</p>
+          <div class="btns"><button class="btn primary block big" data-a="beat" type="button">Beat this ${U}</button></div>
+        </div>
+        `}
+      </div>
+      </div>
+    </div>
+  </div>
+  ${FOOT}`;
+  revealSeason(sim,own);
+}
+function revealSeason(sim,own){
+  const N=SP.season,cells=[...document.querySelectorAll('.cell')],t={W:0,D:0,L:0};
+  const show=()=>{const w=$('#tw'),d=$('#td'),l=$('#tl');if(w)w.textContent=t.W;if(d)d.textContent=t.D;if(l)l.textContent=t.L;};
+  const mark=(i)=>{const x=sim.res[i];if(!cells[i])return;cells[i].className='cell '+x;cells[i].textContent=x;t[x]++;};
+  const done=()=>{
+    show();$('#facts').hidden=false;$('#after').hidden=false;
+    if(own&&st.challenge){
+      const me=sim.pts,them=st.challenge.pts,w=SP.ptsLabel;
+      const msg=me>them?`You beat their ${them} ${w} with ${me}.`:me===them?`Level on ${me} ${w}. Draft again to break the tie.`:`${them} ${w} beats your ${me}. Draft again to try for more.`;
+      $('#verdict').innerHTML=`<p class="verdict" role="status">${msg}</p>`;
+    }
+  };
+  if(reduce){for(let i=0;i<N;i++)mark(i);done();return;}
+  const step=Math.max(18,Math.round(2100/N));
+  let i=0;
+  st.timer=setInterval(()=>{
+    mark(i);show();i++;
+    if(i>=N){clearInterval(st.timer);done();}
+  },step);
+}
+
+/* ---------- actions ---------- */
+function copyText(txt,cb){
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}document.body.removeChild(ta);cb(ok);};
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>cb(true),fallback);return;}}catch(e){}
+  fallback();
+}
+function loadCode(raw){
+  const d=decode(raw);
+  if(d.err){const e=$('#codeerr');if(e)e.textContent=d.err;return;}
+  st.result={fi:d.fi,xi:d.xi,code:d.code,sim:simulate(d.xi,d.code),own:false};
+  resultView();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b||b.disabled)return;
+  const a=b.dataset.a;
+  switch(a){
+    case 'sport':setSport(b.dataset.v);st.fi=0;st.challenge=null;home();break;
+    case 'setf':if(st.view==='draft'&&!st.fSet){st.fi=+b.dataset.v;st.slots=mkSlots(st.fi);st.fSet=true;updateDraft();}break;
+    case 'start':startDraft();window.scrollTo(0,0);break;
+    case 'home':home();window.scrollTo(0,0);break;
+    case 'how':if(st.view!=='home')home();{const h=$('#how');if(h)h.scrollIntoView({behavior:reduce?'auto':'smooth'});}break;
+    case 'spin':spin();break;
+    case 'reroll':reroll();break;
+    case 'pick':pick(+b.dataset.i);break;
+    case 'again':startDraft();window.scrollTo(0,0);break;
+    case 'load':loadCode($('#codein').value);break;
+    case 'sample':{const xi=sampleXI();$('#codein').value=encode(0,xi);$('#codeerr').textContent='';break;}
+    case 'beat':st.challenge={pts:st.result.sim.pts};startDraft();window.scrollTo(0,0);break;
+    case 'dropchallenge':st.challenge=null;home();break;
+    case 'copy':copyText(st.result.code,ok=>{$('#copybtn').textContent=ok?'Copied':'Copy failed, select it by hand';});break;
+    case 'share':{
+      const s=st.result.sim,msg=`I drafted my ${SP.unit} on ${SP.brand} and went ${SP.share(s)}. Load my code and try to beat it: ${st.result.code}`;
+      const done=()=>{$('#sharemsg').textContent='Challenge message copied. Paste it to your mate.';};
+      if(navigator.share){navigator.share({text:msg}).catch(()=>copyText(msg,done));}else copyText(msg,done);
+      break;}
+    case 'email':{
+      const v=($('#email').value||'').trim(),m=$('#emailmsg');
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){m.textContent='Enter a valid email address.';m.style.color='var(--loss)';break;}
+      m.style.color='';m.textContent='Saved in the mock. Nothing was sent or stored.';break;}
+  }
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='codein'){loadCode(e.target.value);}});
+
+setSport('football');
+home();
+})();
+</script>
+</body>
+</html>
